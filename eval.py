@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-
+import sys; sys.path.append("/usr/local/lib/python2.7/dist-packages")
 import tensorflow as tf
 import numpy as np
 import os
@@ -7,6 +7,7 @@ import time
 import datetime
 import data_helpers
 from text_cnn import TextCNN
+# what is this ?
 from tensorflow.contrib import learn
 
 # Parameters
@@ -38,7 +39,9 @@ else:
     y_test = [1, 0]
 
 # Map data into vocabulary
-vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab")
+#vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab")
+# for test korean
+vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab_review")
 vocab_processor = learn.preprocessing.VocabularyProcessor.restore(vocab_path)
 x_test = np.array(list(vocab_processor.transform(x_raw)))
 

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-
+import sys; sys.path.append("/usr/local/lib/python2.7/dist-packages")
 import tensorflow as tf
 import numpy as np
 import os
@@ -66,6 +66,8 @@ print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 # ==================================================
 
 with tf.Graph().as_default():
+    # allow_soft_placement : If you would like TensorFlow to automatically choose an existing and supported device to run the operations in case the specified one doesn't exist, you can set allow_soft_placement to True in the configuration option when creating the session.
+    #log_device_placement : To find out which devices your operations and tensors are assigned to, create the session with log_device_placement configuration option set to True.
     session_conf = tf.ConfigProto(
       allow_soft_placement=FLAGS.allow_soft_placement,
       log_device_placement=FLAGS.log_device_placement)
@@ -123,11 +125,15 @@ with tf.Graph().as_default():
         saver = tf.train.Saver(tf.all_variables())
 
         # Write vocabulary
-        vocab_processor.save(os.path.join(out_dir, "vocab"))
+        #vocab_processor.save(os.path.join(out_dir, "vocab"))
+        vocab_processor.save(os.path.join(out_dir, "vocab_review"))
 
         # Initialize all variables
         sess.run(tf.initialize_all_variables())
 
+        ## what is diffence between train and dev ?
+        ## train : training 용
+        ## dev : 중간 평가 용
         def train_step(x_batch, y_batch):
             """
             A single training step

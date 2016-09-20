@@ -1,15 +1,22 @@
+#-*- coding: utf-8 -*-
 import numpy as np
 import re
 import itertools
 from collections import Counter
 
 
+data_path = "/home/ubuntu/work/ML-Testing/data/cnn-text-classification-tf/rt-polaritydata/"
+
+# why use this function like this? exspecially 'space'....
 def clean_str(string):
     """
     Tokenization/string cleaning for all datasets except for SST.
     Original taken from https://github.com/yoonkim/CNN_sentence/blob/master/process_data.py
-    """
-    string = re.sub(r"[^A-Za-z0-9(),!?\'\`]", " ", string)
+    """ 
+    #string = string.decode('utf-8')
+    #string = re.findall(u'[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7A3]+', string)
+    #print (string)
+    string = re.sub(r"[^ㄱ-ㅎㅏ-ㅣ가-힝0-9a-zA-Z(),!?\'\`]", " ", string)
     string = re.sub(r"\'s", " \'s", string)
     string = re.sub(r"\'ve", " \'ve", string)
     string = re.sub(r"n\'t", " n\'t", string)
@@ -24,16 +31,15 @@ def clean_str(string):
     string = re.sub(r"\s{2,}", " ", string)
     return string.strip().lower()
 
-
 def load_data_and_labels():
     """
     Loads MR polarity data from files, splits the data into words and generates labels.
     Returns split sentences and labels.
     """
     # Load data from files
-    positive_examples = list(open("./data/rt-polaritydata/rt-polarity.pos", "r").readlines())
+    positive_examples = list(open(data_path + "review.pos", "r").readlines())
     positive_examples = [s.strip() for s in positive_examples]
-    negative_examples = list(open("./data/rt-polaritydata/rt-polarity.neg", "r").readlines())
+    negative_examples = list(open(data_path + "review.neg", "r").readlines())
     negative_examples = [s.strip() for s in negative_examples]
     # Split by words
     x_text = positive_examples + negative_examples
